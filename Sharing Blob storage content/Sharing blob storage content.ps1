@@ -4,13 +4,13 @@
 <#
 Example : 
 #>
-$resourcegroupName = "storage"
-$storageAccountName = "ihvm"
-$ContainerName = "vhds" 
+$resourcegroupName = ""
+$storageAccountName = ""
+$ContainerName = "" 
 $TimeDuration = 4 
-$FileName = "IH-Management2016515162836.vhd"
-$blobUri = "https://ihvm.blob.core.windows.net/vhds/IH-Management2016515162836.vhd"
-$Permissions = "rwd"
+$FileName = ""
+$blobUri = ""
+$Permissions = ""
  
 $storageAccount = Get-AzureRmStorageAccount -ResourceGroupName $resourcegroupName -Name $storageAccountName; 
 $key = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourcegroupName -Name $storageAccount.StorageAccountName).Key1
