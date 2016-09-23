@@ -2,23 +2,23 @@
 
 # Variables    
 ## Global
-$ResourceGroupName = "AZMMTesting"
-$Location = "WestEurope"
+$ResourceGroupName = ""
+$Location = ""
 
 ## Storage
-$StorageName = "azmmstorage"
+$StorageName = ""
 $StorageType = "Standard_LRS"
 
 ## Network
-$InterfaceName = "azzmnetwork"
-$Subnet1Name = "subnet01"
-$VNetName = "AZMMDemo_VNET"
+$InterfaceName = ""
+$Subnet1Name = ""
+$VNetName = ""
 $VNetAddressPrefix = "10.0.0.0/16"
 $VNetSubnetAddressPrefix = "10.0.0.0/24"
 
 ## Compute
-$VMName = "azmmtestvm"
-$ComputerName = "AZMM-DEMO"
+$VMName = ""
+$ComputerName = ""
 $VMSize = "Standard_A1"
 $OSDiskName = $VMName + "OSDisk"
 
