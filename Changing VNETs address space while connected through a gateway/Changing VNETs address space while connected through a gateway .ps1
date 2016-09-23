@@ -9,6 +9,11 @@ $SharedKey = ""
 $ConnectionName = ""
 
 # Prepare the network
+<#
+This function will remove all existing VNET peering’s on your current network. 
+Afterwards you can rebuild them by using PowerShell or the Azure Resource Manager portal.
+Based on the resource group and the virtual network, the peering’s will be removed. 
+#>
 function Remove-IHNetworkPeering {
     [CmdLetBinding()]
     param (
@@ -27,7 +32,13 @@ function Remove-IHNetworkPeering {
         #splat params to command
         Remove-AzureRmVirtualNetworkPeering @params -force
     }
-}# Is working
+}
+# Prepare the virtual network
+<#
+Using this function will prepare the virtual network for chancing its address space. 
+First it will remove all the peering’s, adding a Temp-Subnet to move all the virtual machines to and afterwards moving the virtual machines to the Temp-Subnet. 
+Also the virtual network gateway and its connections will be removed.  
+#>
 function Set-IHVirtualNetwork {
     [CmdLetBinding()]
     param (
@@ -82,7 +93,12 @@ function Set-IHVirtualNetwork {
         $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnetName
         return $vnet
     }   
-}# Is Should be working
+}
+# Changing the Subnet range
+<#
+This function will change the address space of the subnet based on the defined new address space.
+It will reconfigure the VNET configuration and apply it to the Azure virtual network. 
+#>
 function Set-IHSubnetRange {
     [CmdLetBinding()]
     param(
@@ -100,6 +116,12 @@ function Set-IHSubnetRange {
     }
     Set-AzureRmVirtualNetwork -VirtualNetwork $vnet
 } # Is working
+# Recreate VPN connection
+<#
+After the VPN connection is removed, a new gateway and connection will be set up. 
+This will connect with the existing local network gateway.
+ATTENTION: the virtual network gateway ip can be changed. 
+#>
 function Reset-IHVpnConnection {
     [CmdLetBinding()]
     param(
@@ -143,7 +165,12 @@ function Reset-IHVpnConnection {
     New-AzureRmVirtualNetworkGatewayConnection -Name $ConnectionName -ResourceGroupName $rgName `
     -Location $region -VirtualNetworkGateway1 $gateway1 -LocalNetworkGateway2 $local `
     -ConnectionType IPsec -RoutingWeight 10 -SharedKey $SharedKey
-}# Is working
+}
+# Moving Virtual machines to Temp-Subnet
+<# 
+Checking all existing virtual machines in Azure connected with the virtual network. 
+Afterwards it will move all this machines to the Temp-Subnet. 
+#>
 function Set-IHVMInCorrectSubnet {
     [CmdLetBinding()]
     param (
@@ -159,7 +186,11 @@ function Set-IHVMInCorrectSubnet {
             Set-AzureRmNetworkInterface -NetworkInterface $Nic -Verbose        
         }             
     }
-}# Is working
+}
+# Clean the Network
+<#
+After the setup is performed the network will be cleared out of any unnecessary configurations. 
+#>
 function Clear-IHNetwork {
     [CmdLetBinding()]
     param(
@@ -186,7 +217,7 @@ Set-IHSubnetRange -vnet (Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -N
 # Moving nics
 Set-IHVMInCorrectSubnet -vnet (Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnetName)
 
-# REcreate Connection VPN
+# Recreate Connection VPN
 $params = @{
     vnet = (Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnetName)
     gatewayIpName = $gatewayIpName
