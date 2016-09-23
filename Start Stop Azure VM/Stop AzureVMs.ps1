@@ -38,9 +38,7 @@
     }
     else 
     {
-		$VMs = Get-AzureVM | where-object -FilterScript{$_.Status -ne 'StoppedDeallocated'} | 
-?{$_.name -eq 'ANB-CLI-003' -or $_.name -eq 'ANB-CLI-004' -or $_.name -eq 'ANB-CLI-005' -or $_.name -eq 'ANB-CLI-006' -or $_.name -eq 'ANB-CLI-007' -or $_.name -eq 'ANB-CLI-008' -or $_.name -eq 'ANB-CLI-009'}
-    }
+		$VMs = Get-AzureVM
     
     # Stop each of the VMs
     foreach -parallel ($VM in $VMs) 
