@@ -68,6 +68,8 @@ function Set-IHVirtualNetwork {
     # Move all VM's to Temp Subnet
     $SubNetConfig = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $vnet
     $AllNics = Get-AzureRmNetworkInterface
+    
+     $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnetName
 
     while ($null -eq (Get-AzureRmVirtualNetworkSubnetConfig -Name Temp-Subnet -VirtualNetwork $vnet).Id) {
             Write-Output "waiting for azure virtual network subnet config ID"
